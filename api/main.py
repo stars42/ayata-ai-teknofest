@@ -1,8 +1,7 @@
 from fastapi import Depends, FastAPI, APIRouter
+from fastapi.middleware.cors import CORSMiddleware
 
 from src.models import PredictParams
-
-__all__ = ["app"]
 
 if __name__ == "__main__":
     print("Do not run this file directly. Use 'python .' instead.")
@@ -13,11 +12,18 @@ app = FastAPI(
     docs_url="/",
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 router = APIRouter(
     prefix="/api",
     tags=["API"]
 )
-
 
 @router.post("/predict")
 def predict(params: PredictParams = Depends()):

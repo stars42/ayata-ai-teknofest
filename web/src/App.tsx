@@ -7,7 +7,7 @@ import CheckSvg from "./assets/check.svg";
 import axios from "axios";
 import Loader from "./components/Loader";
 
-const API_HOST = "http://localhost:5000/api";
+const API_HOST = "http://localhost:5000/api/predict";
 
 export default function App() {
   const [inputValue, setInputValue] = useState("");
@@ -29,11 +29,11 @@ export default function App() {
     setDisabled(true);
 
     axios
-      .post(API_HOST + "/predict", {
+      .post(API_HOST, {
         query: inputValue,
       })
       .then((response) => {
-        console.log(response.data);
+        console.log(response.data); // query yerine response.data olmalı
         setLoading(false);
         if (response.data.error) {
           setError(response.data.error);
@@ -45,7 +45,7 @@ export default function App() {
       })
       .catch((error) => {
         setLoading(false);
-        setError(error);
+        setError(error.response ? error.response.data : error);
         setDisabled(false);
       });
   };
@@ -53,7 +53,9 @@ export default function App() {
   return (
     <div className="flex h-screen overflow-hidden">
       <div
-        className={`w-2/5 p-4 flex flex-col justify-start items-start transition-all duration-300 ${isAdvancedMode ? "overflow-y-auto" : ""}`}
+        className={`w-2/5 p-4 flex flex-col justify-start items-start transition-all duration-300 ${
+          isAdvancedMode ? "overflow-y-auto" : ""
+        }`}
       >
         <div className="flex flex-col w-full mb-4">
           <input
@@ -121,17 +123,10 @@ export default function App() {
               <span className="text-red-500 text-3xl">{error.message}</span>
             </div>
           ) : (
-            <div className="flex flex-col space-y-4">
-              {data.map((item, index) => (
-                <div key={index} className="flex flex-row space-x-4">
-                  <span>{item.name}</span>
-                  <span>{item.age}</span>
-                </div>
-              ))}
-            </div>
+            data && <div className="text-sm">{JSON.stringify(data, null, 2)}</div>
           )}
         </div>
       </div>
     </div>
   );
-}
+}6

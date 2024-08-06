@@ -1,11 +1,9 @@
-from fastapi import Depends, FastAPI, APIRouter
+import uvicorn
+from fastapi import APIRouter, Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import ORJSONResponse
 
 from src.models import PredictParams
-
-if __name__ == "__main__":
-    print("Do not run this file directly. Use 'python .' instead.")
-    exit(1)
 
 app = FastAPI(
     title="AyataAI - API",
@@ -16,17 +14,19 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["POST", "OPTIONS"],
     allow_headers=["*"],
 )
 
-router = APIRouter(
-    prefix="/api",
-    tags=["API"]
-)
+router = APIRouter(prefix="/api", tags=["API"])
+
 
 @router.post("/predict")
 def predict(params: PredictParams = Depends()):
+    # TODO - Buraya AI ile ilgili işlemler gelecek
     return {"query": params.query}
 
-app.include_router(router)
+
+app.include_router(router, default_response_class=ORJSONResponse)
+
+__all__ = ["app"]

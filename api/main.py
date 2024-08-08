@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, FastAPI
+from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import ORJSONResponse
 
@@ -23,9 +23,8 @@ router = APIRouter(prefix="/api", tags=["API"])
 @router.post("/predict")
 def predict(params: PredictParams = Depends()):
     # TODO - Buraya AI ile ilgili işlemler gelecek
-    return {"query": params.query}
+    return ORJSONResponse(content={"query": params.query})
 
-
-app.include_router(router, default_response_class=ORJSONResponse)
+app.include_router(router)
 
 __all__ = ["app"]

@@ -1,7 +1,7 @@
 import logging
 
 import httpx
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import ORJSONResponse
 
@@ -31,7 +31,7 @@ logging.basicConfig(
 
 
 @app.post("/predict")
-def predict(params: PredictParams = Depends()):
+def predict(params: PredictParams):
     data: dict = httpx.get(AI_SERVER_HOST, params={"query": params.text}, timeout=30).json()
     print(data)
     entities: list = data["response"]["entity_list"]

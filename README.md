@@ -38,7 +38,3 @@ POST /predict?text=Konferansın organizasyonu çok başarılıydı, ancak konuş
 }
 ```
 Bu örnekte, Konferansın organizasyonu öznesi olumlu olarak değerlendirilmişken, konuşmacıların bazıları öznesi olumsuz olarak değerlendirilmiştir.
-
-## Lisans
-apache 2.0
-[]

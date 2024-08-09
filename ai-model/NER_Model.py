@@ -2,8 +2,7 @@ from numpy import argmax, ndarray
 import pandas as pd
 import torch
 from datasets import Dataset, load_metric
-from transformers import (AutoModelForTokenClassification, AutoTokenizer,
-                          Trainer, TrainingArguments)
+from transformers import AutoModelForTokenClassification, AutoTokenizer, Trainer, TrainingArguments
 
 
 INPUT_DATA_FILE = "train.txt"  # Veri setinin olduğu dosya
@@ -14,7 +13,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = AutoModelForTokenClassification.from_pretrained(
     "dbmdz/bert-base-turkish-128k-uncased", num_labels=len(tag2id)
 ).to(device)
-metric = load_metric("seqeval") 
+metric = load_metric("seqeval")
 
 
 def load_and_label(file_path: str):
@@ -37,7 +36,7 @@ def load_and_label(file_path: str):
                 labels.append(current_labels)
                 current_sentence = []
                 current_labels = []
-        
+
     if current_sentence:
         sentences.append(current_sentence)
         labels.append(current_labels)

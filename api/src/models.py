@@ -1,10 +1,13 @@
 from fastapi import Query
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+
+from src.config import MAX_CHARACTER_LENGTH
 
 
 class PredictParams(BaseModel):
-    query: str = Query(
+    text: str = Field(
         ...,
         title="Query",
-        description="The query to predict"
+        description="Query to predict sentiment for.",
+        max_length=MAX_CHARACTER_LENGTH
     )

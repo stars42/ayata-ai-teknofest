@@ -9,6 +9,12 @@ Ayata AI, bir Cümle Varlık Tanıma (NER) modeli kullanarak, verilen cümle iç
 **Duygu Analizi**: Tespit edilen her bir öznenin olumlu, olumsuz veya nötr duygusal eğilimini belirler.  
 **API Desteği**: FastAPI kullanılarak geliştirilen RESTful API üzerinden sonuçlara erişim sağlar.
 
+### Kullanılan veri setleri
+NER Modeli - **Shrinked TWNERTC Turkish NER Data by Kuzgunlar** [Link](
+    https://www.kaggle.com/datasets/behcetsenturk/shrinked-twnertc-turkish-ner-data-by-kuzgunlar
+)  
+Sentiment Analysis - **compiled-absa-english** [Link](https://huggingface.co/datasets/carant-ai/compiled-absa-english)
+
 #### API Kullanımı
 **Cümle Analizi**  
 Kullanıcı, POST /predict yoluna bir HTTP isteği göndererek cümle analizi gerçekleştirebilir.
@@ -37,4 +43,3 @@ POST /predict?text=Konferansın organizasyonu çok başarılıydı, ancak konuş
     ]
 }
 ```
-Bu örnekte, Konferansın organizasyonu öznesi olumlu olarak değerlendirilmişken, konuşmacıların bazıları öznesi olumsuz olarak değerlendirilmiştir.

@@ -5,9 +5,8 @@ from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import ORJSONResponse
 
-from src.models import PredictParams
 from src.config import AI_SERVER_HOST
-
+from src.models import PredictParams
 
 app = FastAPI(
     title="Teknofest - AyataAI API",

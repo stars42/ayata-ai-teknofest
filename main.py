@@ -1,12 +1,12 @@
 import logging
 
-import httpx
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import ORJSONResponse
 
-from src.config import AI_SERVER_HOST
 from src.models import PredictParams
+
+from ai_models.api_response import predict
 
 app = FastAPI(
     title="Teknofest - AyataAI API",
@@ -31,16 +31,7 @@ logging.basicConfig(
 
 
 @app.post("/predict")
-def predict(params: PredictParams):
-    data: dict = httpx.get(AI_SERVER_HOST, params={"query": params.text}, timeout=30).json()
-    print(data)
-    entities: list = data["response"]["entity_list"]
-    for i in data["response"]["results"]:
-        entity: dict = i["entity"]
-        if not entity in entities:
-            entities.append(entity)
-
-    data["response"]["entity_list"] = entities
-
-    logger.info(f"Request: {params.text} | Response: {data['response']}")
-    return ORJSONResponse(content=data["response"])
+def _predict(params: PredictParams):
+    data = predict(params.text)
+    logger.info(f"Request: {params.text} | Response: {data}")
+    return ORJSONResponse(content= data)

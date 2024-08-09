@@ -1,3 +1,4 @@
+from scikit.learn.preprocessing import LabelEncoder
 from transformers import (AutoModelForTokenClassification, AutoTokenizer,
                           pipeline)
 
@@ -53,7 +54,21 @@ def sa_predict(prompt: str, entities: list):
 def predict(text_sentence: str):
     ner_result = ner_predict_pip(text_sentence)
     entities = get_entities(ner_result)
-    return sa_predict(text_sentence, entities)
+    data = sa_predict(text_sentence, entities)
+    
+    label_encoder = LabelEncoder()
+    label_encoder.fit(data['label_text'])
+    
+    predicted_labels = label_encoder.inverse_transform(data.cpu().numpy())
+
+    results = []
+    for aspect, sentiment in zip(entities, predicted_labels):
+        results.append({"entity": aspect, "sentiment": sentiment})
+
+    return {
+        "entity_list": entities,
+        "results": results
+    }
 
 
 __all__ = ["predict"]

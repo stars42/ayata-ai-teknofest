@@ -10,6 +10,7 @@ normalize = lambda text: unicodedata.normalize("NFKD", text) \
                                     .encode("ascii", errors="ignore") \
                                     .decode("utf-8")
 
+
 def load_data(csv_file: str):
     data = pd.read_csv(csv_file)
     texts = data["text"]
@@ -17,9 +18,7 @@ def load_data(csv_file: str):
 
     for index, item in enumerate(zip(texts, aspects)):
         text, aspect = item
-        if (
-            normalize(text) != text or normalize(aspect) != aspect
-        ):
+        if normalize(text) != text or normalize(aspect) != aspect:
             data.drop(index, inplace=True)
 
     return data, texts, aspects
@@ -31,13 +30,13 @@ def create_tags(texts: list[str], aspects: list[str]) -> pd.DataFrame:
     """
     labels = []
     sentences = []
-    
+
     for index, sentence in enumerate(texts):
         words = sentence.split()
         label = []
         wrong_aspect = []
         for word in words:
-            #* Burada aspect'lerin içinde geçtiği kelimeleri buluyoruz.
+            # * Burada aspect'lerin içinde geçtiği kelimeleri buluyoruz.
             if re.search(re.escape(aspects[index]), word, flags=re.IGNORECASE):
                 label.append("1")
             else:
@@ -59,6 +58,7 @@ def mask_aspects(text: str, aspects: list[str]) -> str:
 
 def check_label(labels: list[str]) -> bool:
     return any(label == "1" for label in labels)
+
 
 def main(*args):
     data, texts, aspects = load_data(INPUT_DATA_FILE)

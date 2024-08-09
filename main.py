@@ -26,11 +26,9 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(
     level=logging.INFO,
     format="[%(asctime)s] %(message)s",
-    handlers=[
-        logging.FileHandler("logs.log", encoding="utf-8"),
-        logging.StreamHandler()
-    ]
+    handlers=[logging.FileHandler("logs.log", encoding="utf-8"), logging.StreamHandler()],
 )
+
 
 @app.post("/predict")
 def predict(params: PredictParams = Depends()):
@@ -45,4 +43,4 @@ def predict(params: PredictParams = Depends()):
     data["response"]["entity_list"] = entities
 
     logger.info(f"Request: {params.text} | Response: {data['response']}")
-    return ORJSONResponse(content=data["response"]) 
+    return ORJSONResponse(content=data["response"])
